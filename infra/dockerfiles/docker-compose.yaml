@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mongo:latest
+    container_name: ${DB_NAME}
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mongodb-data-api:/data/db
+    ports:
+      - "${DB_PORT}:27017"
+
+volumes:
+  mongodb-data-api:
