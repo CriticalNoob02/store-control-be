@@ -7,7 +7,7 @@ import (
 	"github.com/CriticalNoob02/store-control-be/internal/model"
 )
 
-var ClientsFilterList = []string{"name", "cpf", "number"}
+var ClientFilterList = []string{"name", "cpf", "number"}
 
 func ClientValidation(user model.Client) error {
 	if user.Name == "" {

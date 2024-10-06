@@ -1,8 +1,7 @@
 package route
 
 import (
-	"github.com/CriticalNoob02/store-control-be/internal/controller"
-
+	controller "github.com/CriticalNoob02/store-control-be/internal/controller/clients"
 	"github.com/gin-gonic/gin"
 )
 
