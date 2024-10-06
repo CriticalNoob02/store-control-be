@@ -14,6 +14,7 @@ func main() {
 	api := gin.Default()
 
 	route.ClientRoutes(api)
+	route.ProductRoutes(api)
 
 	api.Run()
 }

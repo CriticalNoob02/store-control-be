@@ -11,26 +11,26 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetClients(request *gin.Context) {
+func GetProducts(request *gin.Context) {
 	filter := bson.M{}
 	queryParams := request.Request.URL.Query()
-	var decodedClients []map[string]interface{}
+	var decodedProducts []map[string]interface{}
 
 	conn, err := service.GetDbConnection(context.Background())
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	userCollection := conn.Database("teste").Collection("clients")
+	ProductsCollection := conn.Database("teste").Collection("products")
 
-	for _, param := range validation.ClientsFilterList {
+	for _, param := range validation.ProductFilterList {
 		value := queryParams.Get(param)
 		if value != "" {
 			filter[param] = value
 		}
 	}
 
-	cur, err := userCollection.Find(context.Background(), filter)
+	cur, err := ProductsCollection.Find(context.Background(), filter)
 	if err != nil {
 		util.Logger.Error("Erro ao buscar dados no banco", "error", err.Error())
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -39,14 +39,14 @@ func GetClients(request *gin.Context) {
 	defer cur.Close(context.Background())
 
 	for cur.Next(context.Background()) {
-		var decodedClient map[string]interface{}
-		if err := cur.Decode(&decodedClient); err != nil {
+		var decodedProduct map[string]interface{}
+		if err := cur.Decode(&decodedProduct); err != nil {
 			util.Logger.Error("Erro ao decodificar o resultado", "error", err.Error())
-			request.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao decodificar cliente"})
+			request.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao decodificar o produto"})
 			return
 		}
-		decodedClients = append(decodedClients, decodedClient)
+		decodedProducts = append(decodedProducts, decodedProduct)
 	}
 
-	request.JSON(http.StatusOK, decodedClients)
+	request.JSON(http.StatusOK, decodedProducts)
 }

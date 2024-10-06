@@ -11,16 +11,16 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func CreateClient(request *gin.Context) {
+func CreateProduct(request *gin.Context) {
 	conn, err := service.GetDbConnection(context.Background())
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	userCollection := conn.Database("teste").Collection("clients")
+	userCollection := conn.Database("teste").Collection("products")
 
-	var user model.Client
+	var user model.Product
 
 	if err := request.BindJSON(&user); err != nil {
 		util.Logger.Error("Ocorreu um erro aqui!")
@@ -28,7 +28,7 @@ func CreateClient(request *gin.Context) {
 		return
 	}
 
-	err = validation.ClientValidation(user)
+	err = validation.ProductValidation(user)
 	if err != nil {
 		request.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -41,5 +41,5 @@ func CreateClient(request *gin.Context) {
 		return
 	}
 
-	request.JSON(http.StatusCreated, gin.H{"message": "Usuário criado com sucesso"})
+	request.JSON(http.StatusCreated, gin.H{"message": "Produto criado com sucesso"})
 }
