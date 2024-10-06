@@ -1,0 +1,1 @@
+docker compose --env-file infra/env/.env -f infra/dockerfiles/docker-compose.yaml up

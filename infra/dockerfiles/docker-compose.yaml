@@ -1,7 +1,7 @@
 services:
   db:
     image: mongo:latest
-    container_name: ${DB_NAME}
+    container_name: store-control-db
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${DB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
