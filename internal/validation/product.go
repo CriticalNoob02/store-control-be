@@ -8,14 +8,14 @@ import (
 
 var ProductFilterList = []string{"name", "amount", "category", "price"}
 
-func ProductValidation(user model.Product) error {
-	if user.Name == "" {
+func ProductValidation(product model.Product) error {
+	if product.Name == "" {
 		return errors.New("campo de Nome e de preenchimento obrigatorio")
 	}
-	if user.Category == "" {
+	if product.Category == "" {
 		return errors.New("campo de Categoria e de preenchimento obrigatorio")
 	}
-	if user.Price == 0 {
+	if product.Price == 0 {
 		return errors.New("campo de Preco e de preenchimento obrigatorio")
 	}
 	return nil
