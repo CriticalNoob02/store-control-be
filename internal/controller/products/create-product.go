@@ -28,12 +28,12 @@ func CreateProduct(request *gin.Context) {
 		return
 	}
 
+	product.IdProduct = uuid.New().String()
+
 	if err := util.ValidateStruct(product); err != nil {
 		request.JSON(http.StatusBadRequest, gin.H{"validation": err.Error()})
 		return
 	}
-
-	product.IdProduct = uuid.New().String()
 
 	_, err = userCollection.InsertOne(context.Background(), product)
 	if err != nil {
