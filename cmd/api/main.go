@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/CriticalNoob02/store-control-be/internal/config"
 	"github.com/CriticalNoob02/store-control-be/internal/route"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,8 @@ func main() {
 
 	route.ClientRoutes(api)
 	route.ProductRoutes(api)
+	route.SaleRoutes(api)
 
-	api.Run()
+	util.Logger.Info("listening", "port", config.GetPort())
+	api.Run(":" + config.GetPort())
 }

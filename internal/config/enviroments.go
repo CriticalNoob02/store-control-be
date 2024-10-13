@@ -18,3 +18,7 @@ func GetDbUri() string {
 		os.Getenv("DB_PORT"),
 	)
 }
+
+func GetPort() string {
+	return os.Getenv("LISTENING_PORT")
+}
