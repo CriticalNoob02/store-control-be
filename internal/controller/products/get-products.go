@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/CriticalNoob02/store-control-be/internal/validation"
+	"github.com/CriticalNoob02/store-control-be/internal/model"
 	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func GetProducts(request *gin.Context) {
 	}
 	ProductsCollection := conn.Database("teste").Collection("products")
 
-	for _, param := range validation.ProductFilterList {
+	for _, param := range model.ProductFilterList {
 		value := queryParams.Get(param)
 		if value != "" {
 			filter[param] = value

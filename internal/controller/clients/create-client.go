@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/CriticalNoob02/store-control-be/internal/model"
-	"github.com/CriticalNoob02/store-control-be/internal/validation"
 	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func CreateClient(request *gin.Context) {
@@ -28,9 +28,10 @@ func CreateClient(request *gin.Context) {
 		return
 	}
 
-	err = validation.ClientValidation(user)
-	if err != nil {
-		request.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	user.IdClient = uuid.New()
+
+	if err := util.ValidateStruct(user); err != nil {
+		request.JSON(http.StatusBadRequest, gin.H{"validation": err.Error()})
 		return
 	}
 

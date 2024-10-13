@@ -5,10 +5,10 @@ import (
 	"net/http"
 
 	"github.com/CriticalNoob02/store-control-be/internal/model"
-	"github.com/CriticalNoob02/store-control-be/internal/validation"
 	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 func CreateProduct(request *gin.Context) {
@@ -20,21 +20,22 @@ func CreateProduct(request *gin.Context) {
 
 	userCollection := conn.Database("teste").Collection("products")
 
-	var user model.Product
+	var product model.Product
 
-	if err := request.BindJSON(&user); err != nil {
+	if err := request.BindJSON(&product); err != nil {
 		util.Logger.Error("Ocorreu um erro aqui!")
 		request.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	err = validation.ProductValidation(user)
-	if err != nil {
-		request.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	if err := util.ValidateStruct(product); err != nil {
+		request.JSON(http.StatusBadRequest, gin.H{"validation": err.Error()})
 		return
 	}
 
-	_, err = userCollection.InsertOne(context.Background(), user)
+	product.IdProduct = uuid.New()
+
+	_, err = userCollection.InsertOne(context.Background(), product)
 	if err != nil {
 		util.Logger.Error("Ocorreu um erro aqui!")
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

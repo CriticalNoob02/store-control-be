@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/CriticalNoob02/store-control-be/internal/validation"
+	"github.com/CriticalNoob02/store-control-be/internal/model"
 	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
@@ -23,7 +23,7 @@ func GetClients(request *gin.Context) {
 	}
 	userCollection := conn.Database("teste").Collection("clients")
 
-	for _, param := range validation.ClientFilterList {
+	for _, param := range model.ClientFilterList {
 		value := queryParams.Get(param)
 		if value != "" {
 			filter[param] = value
