@@ -28,7 +28,7 @@ func CreateClient(request *gin.Context) {
 		return
 	}
 
-	user.IdClient = uuid.New()
+	user.IdClient = uuid.New().String()
 
 	if err := util.ValidateStruct(user); err != nil {
 		request.JSON(http.StatusBadRequest, gin.H{"validation": err.Error()})

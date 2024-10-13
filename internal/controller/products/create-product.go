@@ -33,7 +33,7 @@ func CreateProduct(request *gin.Context) {
 		return
 	}
 
-	product.IdProduct = uuid.New()
+	product.IdProduct = uuid.New().String()
 
 	_, err = userCollection.InsertOne(context.Background(), product)
 	if err != nil {
