@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/CriticalNoob02/store-control-be/internal/config"
 	"github.com/CriticalNoob02/store-control-be/internal/model"
-	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -16,7 +16,7 @@ func GetClients(request *gin.Context) {
 	queryParams := request.Request.URL.Query()
 	var decodedClients []map[string]interface{}
 
-	conn, err := service.GetDbConnection(context.Background())
+	conn, err := config.GetDbConnection(context.Background())
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

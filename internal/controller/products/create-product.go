@@ -4,15 +4,15 @@ import (
 	"context"
 	"net/http"
 
+	"github.com/CriticalNoob02/store-control-be/internal/config"
 	"github.com/CriticalNoob02/store-control-be/internal/model"
-	"github.com/CriticalNoob02/store-control-be/pkg/service"
 	"github.com/CriticalNoob02/store-control-be/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
 func CreateProduct(request *gin.Context) {
-	conn, err := service.GetDbConnection(context.Background())
+	conn, err := config.GetDbConnection(context.Background())
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
