@@ -4,9 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/CriticalNoob02/store-control-be/internal/config"
 	"github.com/CriticalNoob02/store-control-be/internal/model"
-	"github.com/CriticalNoob02/store-control-be/pkg/util"
+	service "github.com/CriticalNoob02/store-control-be/internal/service/common"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -14,14 +13,7 @@ import (
 func GetClients(request *gin.Context) {
 	filter := bson.M{}
 	queryParams := request.Request.URL.Query()
-	var decodedClients []map[string]interface{}
-
-	conn, err := config.GetDbConnection(context.Background())
-	if err != nil {
-		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	userCollection := conn.Database("teste").Collection("clients")
+	ctx := context.TODO()
 
 	for _, param := range model.ClientFilterList {
 		value := queryParams.Get(param)
@@ -30,24 +22,11 @@ func GetClients(request *gin.Context) {
 		}
 	}
 
-	cur, err := userCollection.Find(context.Background(), filter)
+	data, err := service.CommonGet("clients", ctx, filter)
 	if err != nil {
-		util.Logger.Error("Erro ao buscar dados no banco", "error", err.Error())
 		request.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	defer cur.Close(context.Background())
 
-	//TODO: Verificar pq nao e possivel usar o model como decodedClient! erro decoding key _id: cannot decode objectID into an array
-	for cur.Next(context.Background()) {
-		var decodedClient map[string]interface{}
-		if err := cur.Decode(&decodedClient); err != nil {
-			util.Logger.Error("Erro ao decodificar o resultado", "error", err.Error())
-			request.JSON(http.StatusInternalServerError, gin.H{"error": "Erro ao decodificar cliente"})
-			return
-		}
-		decodedClients = append(decodedClients, decodedClient)
-	}
-
-	request.JSON(http.StatusOK, decodedClients)
+	request.JSON(http.StatusOK, data)
 }
